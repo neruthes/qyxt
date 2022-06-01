@@ -1,0 +1,321 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[a4paper,tmargin=26mm,bmargin=26mm]{geometry}
+\usepackage{calc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,fontspec,xunicode,contour}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+
+\usepackage{listings,enumerate,enumitem,paralist}
+\usepackage{tocloft,booktabs,longtable,tabu}
+
+\usepackage{fontawesome5,tcolorbox,printlen}
+
+\usepackage{datetime2}
+\usepackage[hidelinks]{hyperref}
+% \hypersetup{
+%     colorlinks=false,
+%     pdfpagemode=FullScreen
+% }
+
+\input{/home/neruthes/DEV/ntexlibs/lib/_common.tex}
+\input{/home/neruthes/DEV/ntexlibs/lib/_fontsets.tex}
+
+
+
+\usepackage[PunctStyle=plain,RubberPunctSkip=false,CJKecglue=\hskip 4pt plus 20pt,CJKglue=\hskip 0pt]{xeCJK}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+% =========================================
+\usepackage{fancyhdr}
+\usepackage{graphicx,eso-pic}
+\graphicspath{{/home/neruthes/DEV/qyxt/qyxt/.img}}
+
+% Optional fonts: Libertinus Serif, Tinos, Literata
+\setmainfont{NewComputerModern}
+\setromanfont{NewComputerModern}
+\setsansfont{IBM Plex Sans}
+\setmonofont{JetBrains Mono NL}
+\setCJKmainfont{FandolSong}
+\setCJKromanfont{FandolSong}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans CJK SC}
+
+
+
+
+\linespread{1.22}
+
+
+% Some dimensions
+\newcommand{\coverbgshiftx}{0mm}
+\setlength{\tabulinesep}{3pt}
+\setlength{\parskip}{8pt}
+\setlength{\parindent}{2em}
+\setlength{\fboxsep}{0pt}
+
+
+\frenchspacing
+
+
+\usepackage{multicol}
+\setlength{\columnsep}{2em}
+
+
+\newcommand{\icode}[1]{\texttt{\footnotesize#1}}
+
+
+\newcommand{\ufs}[1]{\fontsize{#1pt}{#1pt-4pt}\selectfont}
+\newcommand{\csauthor}[1]{{\noindent\large\sffamily\fontspec[Ligatures=TeX]{IBM Plex Sans SemiBold}#1}\linebreak}
+
+\newcommand{\issuesetup}[3]{
+	% $1=issueid $2=sn $3=date
+	\hypersetup{
+		colorlinks=false,
+		pdftitle={群友闲谈 - #1},
+		pdfpagemode=FullScreen,
+	}
+	\newcommand{\cachedIssueid}[0]{#1}
+	\newcommand{\cachedSn}[0]{#2}
+	\newcommand{\cachedDate}[0]{#3}
+}
+\newcommand{\cachedcoverpagetextcolor}[0]{white}
+\newcommand{\maketitlepage}[3]{
+	% $1=mid $2=left $3=right
+	\color{\cachedcoverpagetextcolor}
+	\noindent\begin{titlepage}
+		\newgeometry{hmargin=13.7mm,vmargin=18mm}
+		\rmfamily
+		\hspace{20pt}\vspace{70pt}\par
+
+		% Header
+		\AddToShipoutPictureFG*{
+			\put(120mm,248mm){%
+				\begin{minipage}[b][36mm][t]{\paperwidth-120mm-14mm}
+					\color{\cachedcoverpagetextcolor}
+					\flushright
+					\small
+					\sffamily
+					\fontspec[Ligatures=TeX]{IBM Plex Sans SemiBold}
+					\bfseries
+
+					\vfill\par
+					\tabcolsep=0pt
+					\begin{tabu}{lr}
+						{期刊编号\hspace{8pt}} & {\cachedIssueid} \\
+						{发行日期\hspace{8pt}} & {\cachedDate}    \\
+					\end{tabu}\par
+					\vspace{28pt}
+				\end{minipage}%
+			}%
+		}
+		\AddToShipoutPictureFG*{
+			\put(14mm,248mm){\rule{\paperwidth-28mm}{2mm}}%
+		}
+		\AddToShipoutPictureFG*{
+			\put(14mm,248mm){%
+				\begin{minipage}[b][36mm][t]{105mm}
+					\color{\cachedcoverpagetextcolor}
+					\vspace{10pt}
+					\rmfamily\bfseries
+					{\huge\fontsize{42pt}{42pt}\selectfont 群\hspace{13pt}友\hspace{13pt}闲\hspace{13pt}谈}\par\vspace{5pt}
+					\Large THE GROUP FORUM
+				\end{minipage}
+			}%
+		}
+
+		% Cover art as background
+		\AddToShipoutPictureBG*{\put(-\coverbgshiftx,0mm){\includegraphics[height=\paperheight]{cover/\cachedIssueid a.jpg}}}
+
+		% Left:
+		\AddToShipoutPictureFG*{
+			\put(12mm,20mm){
+				\begin{minipage}[b][170mm][t]{99mm}
+					\flushleft
+					\rmfamily\fontspec[Ligatures=TeX]{Nimbus Roman}\CJKfontspec{Noto Serif CJK SC}\bfseries\large\parskip=25pt\parindent=0pt
+					#2\par\hspace{1pt}
+				\end{minipage}
+			}%
+		}
+		% Right:
+		\AddToShipoutPictureFG*{
+			\put(\paperwidth-99mm-16.5mm,20mm){
+				\begin{minipage}[b][170mm][t]{99mm}
+					\flushright
+					\rmfamily\fontspec[Ligatures=TeX]{Nimbus Roman}\CJKfontspec{Noto Serif CJK SC}\bfseries\large\parskip=25pt\parindent=0pt
+					#3\par\hspace{1pt}
+				\end{minipage}
+			}%
+		}
+
+		\fontspec[Ligatures=TeX]{Nimbus Roman}
+		\CJKfontspec{Noto Serif CJK SC}
+		\bfseries\large
+		\parskip=25pt
+		\parindent=0pt
+		% Middle:
+		\center
+		#1
+	\end{titlepage}
+	\newgeometry{textwidth=38em,tmargin=20mm,bmargin=20mm}
+	\pagecolor{white}\color{black}
+}
+\newcommand{\coverfooter}[1]{
+{\footnotesize\sffamily\mdseries 主办单位：畅所欲言小声哔哔\hfill 主编：Neruthes\hfill 总第\cachedSn{}期\hfill 包含{#1}篇内容}\par
+}
+\newcommand{\issueispreview}[1]{
+	% $1=textcolor $2=bordercolor
+	\AddToShipoutPictureFG*{%
+		\put(10mm,115mm){%
+			\rotatebox[origin=c]{50}{
+				\noindent\begin{minipage}{\paperwidth}
+					\center\sffamily\fontspec{Inter}
+					\color{#1}
+					\ufs{100}
+					\noindent
+					{预览版}\par
+					\ufs{70}
+					\noindent
+					{PREVIEW ONLY}\par
+				\end{minipage}%
+			}
+		}%
+	}
+}
+
+
+
+
+
+\newcommand{\makefinalpage}[3]{
+	% $1=authors $2=editors $3=copyrightyear
+	\clearpage\hspace{1pt}\vfill\par
+	\pagestyle{empty}
+	\small
+
+	\tabcolsep=0pt
+	\noindent
+	\begin{tabu}{lX}
+		{\hspace{6em}} & {}                                  \\
+		{Issue:}       & {\cachedIssueid{} (SN \cachedSn{})} \\
+		{Date:}        & {\cachedDate}                       \\
+		{Authors:}     & {#1}                                \\
+		{Editors:}     & {#2}                                \\
+	\end{tabu}
+
+	\noindent
+	Copyright \copyright{} #3 Various authors. All rights reserved.\\
+	版权所有{#3}各个作者，保留一切权利。
+}
+
+
+
+
+
+\newcommand{\articletitle}[4]{
+	% $1=tagline $2=title $3=date $4=author
+	\clearpage
+	\setcounter{section}{1}
+	\noindent\begin{minipage}{\linewidth}
+		% Tagline
+		{\small\bfseries\sffamily#1}\vspace{13pt}\par
+		% Title
+		\Large
+		% \fontspec[Ligatures=TeX]{Latin Modern Roman}
+		\fontspec[Ligatures=TeX]{Nimbus Roman}
+		\CJKfontspec[Ligatures=TeX]{Noto Serif CJK SC}
+		#2\par
+		\vspace{13pt}\par
+		% Author & Date
+		\fontspec[Ligatures=TeX]{FandolSong}
+		\CJKfontspec[Ligatures=TeX]{FandolSong}
+		{\small 作者：#4\hfill#3}\par%
+		\vspace{19pt}
+		\hrule\vspace{29pt}
+	\end{minipage}
+}
+\newcommand{\editornote}[1]{%
+	\noindent\begin{minipage}{360pt}%
+		\sffamily\fontsize{9pt}{9pt}\selectfont#1%
+	\end{minipage}\par\vspace{25pt}
+}
+
+
+
+% Article sections
+\newcommand{\fontforsection}[0]{\Large\bfseries}
+\newcommand{\fontforsubsection}[0]{\large\bfseries}
+\newcommand{\fontforsubsubsection}[0]{\normalsize\bfseries}
+\setcounter{section}{0}
+\setcounter{subsection}{1}
+\setcounter{subsubsection}{1}
+\renewcommand{\section}[1]{
+	\vskip 15pt {\noindent{\Large\bfseries\fontforsection\arabic{section}. #1}\vskip 12pt}
+	\par
+	\stepcounter{section}%
+}
+\renewcommand{\subsection}[1]{
+	\stepcounter{subsection}%
+	\vskip 15pt {\noindent{\large\bfseries\fontforsubsection\arabic{section}.\arabic{subsection}. #1}\vskip 12pt}
+	\par
+}
+\renewcommand{\subsubsection}[1]{
+	\stepcounter{subsubsection}%
+	\vskip 15pt {\noindent{\normalsize\bfseries\fontforsubsubsection\arabic{section}.\arabic{subsection}\arabic{subsubsection}. #1}\vskip 12pt}
+	\par
+}
+
+
+
+
+
+
+
+
+
+\newcommand{\talkboard}[3]{
+	% $1=title $2=subtitle $3=content
+	\clearpage\vfill
+	% \noindent\begin{minipage}{\textwidth}
+	\begin{tcolorbox}[height=\textheight-4pt,arc=0pt,colback=white,colframe=black,boxrule=0.7pt]
+		\begin{minipage}[t][80pt][t]{\linewidth}
+			\normalsize
+			\center
+			\vskip 10pt
+			\textbf{\normalsize\sffamily{}杂谈空间}\par\vskip 10pt
+			\textbf{\LARGE#1}\par\vskip 10pt
+			\textbf{\Large\fontspec{Nimbus Roman}#2}\par
+		\end{minipage}\par
+		\vskip 10pt
+
+		\center
+		\ufs{12}
+		\begin{minipage}{35.5em}
+			\ufs{12}
+			\vspace{10pt}
+			\columnsep=1.5em
+			\columnseprule=0.4pt
+
+			\begin{multicols}{2}
+				\parskip=7pt
+				#3\par
+			\end{multicols}\par
+			\vskip 10pt
+		\end{minipage}
+	\end{tcolorbox}
+	% \end{minipage}
+	\vfill\clearpage
+}
+\newcommand{\talkboarditem}[2]{
+	% $1=author $2=content
+	{\ufs{9}\faIcon{pen-nib}}\hspace{6pt}{\bfseries\sffamily#1}\par%
+	\nopagebreak%
+	{\ufs{12}#2}\par%
+	\vskip 11pt plus 11pt\vfill\par
+}
+
+
+
+
+
